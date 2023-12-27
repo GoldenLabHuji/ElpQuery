@@ -3,7 +3,7 @@ This is the word model
 """
 
 from pydantic import BaseModel
-from attributes import NumericAttribute
+from models.attribute import NumericAttribute
 
 
 class Word(BaseModel):
@@ -19,6 +19,6 @@ class Word(BaseModel):
         The number of syllables in the main pronunciation
     """
 
-    age_of_aquisition: NumericAttribute
-    n_phon: NumericAttribute
-    n_syll: NumericAttribute
+    age_of_aquisition: NumericAttribute | None
+    n_phon: NumericAttribute | None
+    n_syll: NumericAttribute | None

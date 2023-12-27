@@ -1,4 +1,6 @@
-"This is the attributes model"
+"""
+This is the attributes model
+"""
 
 from enum import Enum
 from pydantic import BaseModel

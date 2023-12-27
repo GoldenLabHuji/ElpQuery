@@ -1,8 +1,7 @@
 "This is the attributes model"
 
+from enum import Enum
 from pydantic import BaseModel
-
-Operator = "<" | ">" | "="
 
 
 class NumericAttribute(BaseModel):
@@ -21,7 +20,7 @@ class NumericAttribute(BaseModel):
     """
 
     value: float
-    operator: Operator
+    operator: Enum("Operator", ["GREATER", "LOWER", "EQUAL"])
     std: float
 
 
@@ -36,23 +35,3 @@ class StringAttribute(BaseModel):
     """
 
     value: str
-
-
-class NPhon(NumericAttribute):
-    """
-    class for number of phonemes in
-    the main pronunciation attribute
-    """
-
-
-class NSyll(NumericAttribute):
-    """
-    class for number of syllables in
-    the main pronunciation attribute
-    """
-
-
-class AgeOfAcquisition(NumericAttribute):
-    """
-    class for age of acquisition attribute
-    """

@@ -1,5 +1,5 @@
 """
-This is the word model
+Module of the word model
 """
 
 from pydantic import BaseModel

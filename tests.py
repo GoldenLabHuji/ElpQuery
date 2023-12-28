@@ -1,5 +1,5 @@
 """
-This is a test file for the project.
+Module of test files for the project.
 """
 import requests
 from general.utils import query_words, words_row_generator
@@ -31,15 +31,19 @@ def test_query_words():
     Function to test the query_words function
     """
     word_params = Word(
-        age_of_aquisition=NumericAttribute(value=8, operator=1, std=0),
-        n_phon=NumericAttribute(value=8, operator=2, std=0),
-        n_syll=NumericAttribute(value=8, operator=3, std=0),
+        age_of_aquisition=NumericAttribute(value=2, operator=1, std=0),
+        n_phon=NumericAttribute(value=5, operator=2, std=0),
+        n_syll=NumericAttribute(value=3, operator=3, std=0),
     )
-    words = query_words(word_params, "items.csv", 10)
-    print(words)
+    words = query_words(word_params, "items.csv", 20)
+    for word in words:
+        print(word, "\n")
 
 
 def main():
+    """
+    The main function
+    """
     # print(test_route())
     # test_words_generator()
     test_query_words()

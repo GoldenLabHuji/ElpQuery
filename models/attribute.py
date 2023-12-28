@@ -1,5 +1,5 @@
 """
-This is the attributes model
+Module of the attributes model
 """
 
 from enum import Enum

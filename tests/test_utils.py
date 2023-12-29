@@ -1,19 +1,9 @@
 """
-Module of test files for the project.
+Module to test the functions in the utils module
 """
-import requests
 from general.utils import query_words, words_row_generator
 from models.word import Word
 from models.attribute import NumericAttribute
-
-
-def test_route():
-    """
-    Function to test the route
-    """
-    get_url = "http://localhost:8000/"
-    get_req = requests.get(get_url, timeout=5).json()
-    return get_req
 
 
 def test_words_generator():
@@ -38,16 +28,3 @@ def test_query_words():
     words = query_words(word_params, "items.csv", 20)
     for word in words:
         print(word, "\n")
-
-
-def main():
-    """
-    The main function
-    """
-    # print(test_route())
-    # test_words_generator()
-    test_query_words()
-
-
-if __name__ == "__main__":
-    main()

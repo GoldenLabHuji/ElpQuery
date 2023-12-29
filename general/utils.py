@@ -54,7 +54,7 @@ def query_words(word_params: Word, file_path: str, limit: int = None) -> list:
     return words
 
 
-def compare_values(row_value: float | int | None, word_param: NumericAttribute) -> bool:
+def compare_values(row_value: float | None, word_param: NumericAttribute) -> bool:
     """
     Function to compare row value with Word
     parameter value using specified operator

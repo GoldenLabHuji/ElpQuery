@@ -1,10 +1,13 @@
-"This is the attributes model"
+"""
+Module of the attributes model
+"""
 
-from enum import Enum
-from pydantic import BaseModel
+from enum import EnumType
+from dataclasses import dataclass
 
 
-class NumericAttribute(BaseModel):
+@dataclass
+class NumericAttribute:
     """
     class for numeric attributes
 
@@ -20,11 +23,12 @@ class NumericAttribute(BaseModel):
     """
 
     value: float
-    operator: Enum("Operator", ["GREATER", "LOWER", "EQUAL"])
+    operator: EnumType
     std: float
 
 
-class StringAttribute(BaseModel):
+@dataclass
+class StringAttribute:
     """
     class for string attributes
 

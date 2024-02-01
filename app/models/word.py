@@ -1,13 +1,12 @@
 """
 Module of the word model
 """
-from dataclasses import dataclass
 from typing import Optional
+from pydantic import BaseModel
 from app.models.attribute import NumericAttribute
 
 
-@dataclass
-class Word:
+class Word(BaseModel):
     """
     This is the word model
     Attributes:
@@ -20,6 +19,6 @@ class Word:
         The number of syllables in the main pronunciation
     """
 
-    age_of_aquisition: Optional[NumericAttribute]
-    n_phon: Optional[NumericAttribute]
-    n_syll: Optional[NumericAttribute]
+    age_of_aquisition: Optional[NumericAttribute] = None
+    n_phon: Optional[NumericAttribute] = None
+    n_syll: Optional[NumericAttribute] = None

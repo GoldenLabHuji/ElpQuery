@@ -1,11 +1,10 @@
 """
 Module to define the utility functions
 """
-
 import pandas as pd
 from app.models.word import Word
 from app.models.attribute import NumericAttribute
-from app.general.resources import Operator
+from app.models.operator import Operator
 
 
 def query_words(df: pd.DataFrame, word_params: Word, limit: int = None) -> list:
@@ -56,7 +55,7 @@ def compare_values(row_value: float | None, word_param: NumericAttribute) -> boo
 
     Parameters
     ----------
-    row_value : float | int
+    row_value : float | None
         the value of the row
     word_param : NumericAttribute
         the word parameter to compare with

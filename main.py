@@ -9,8 +9,8 @@ from app.general.utils import upload_data, query_words
 app = FastAPI()
 
 
-@app.post("/{words_limit}")
-def root(word_params: Word, words_limit: int):
+@app.post("/")
+def root(word_params: Word):
     """
     This is the root function of the project.
 
@@ -25,5 +25,5 @@ def root(word_params: Word, words_limit: int):
         A list of the query words
     """
     df = upload_data("Items.csv")
-    words = query_words(df, word_params, words_limit)
+    words = query_words(df, word_params)
     return words

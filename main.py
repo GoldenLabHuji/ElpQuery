@@ -3,10 +3,11 @@ This is the main file of the project.
 """
 
 from fastapi import FastAPI
+from fastapi.responses import ORJSONResponse
 from app.models.word import Word
 from app.general.utils import upload_data, query_words
 
-app = FastAPI()
+app = FastAPI(default_response_class=ORJSONResponse)
 
 
 @app.post("/")

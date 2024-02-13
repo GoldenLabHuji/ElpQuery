@@ -1,10 +1,11 @@
 """
 Module to test the functions in the utils module
 """
+
 from pytest import mark
 import pandas as pd
 from app.general.utils import query_words, upload_data
-from app.general.resources import Operator
+from app.models.operator import Operator
 from app.models.word import Word
 from app.models.attribute import NumericAttribute
 
@@ -43,5 +44,5 @@ def test_query_words(df: pd.DataFrame):
         n_phon=NumericAttribute(value=9, operator=Operator.LOWER, std=0),
         n_syll=NumericAttribute(value=4, operator=Operator.EQUAL, std=0),
     )
-    words = query_words(df, word_params, 10)
+    words = query_words(df, word_params)
     return words

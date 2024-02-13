@@ -16,14 +16,11 @@ class NumericAttribute(BaseModel):
         the value of the attribute
     operator : Operator
         the operator to be used for the comparison
-    std : float
-        the standard deviation of the attribute
 
     """
 
     value: float
     operator: Operator
-    std: float
 
 
 class StringAttribute(BaseModel):

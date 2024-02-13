@@ -40,9 +40,9 @@ def test_query_words(df: pd.DataFrame):
         the list of words that match the query
     """
     word_params = Word(
-        age_of_aquisition=NumericAttribute(value=3, operator=Operator.GREATER, std=0),
-        n_phon=NumericAttribute(value=9, operator=Operator.LOWER, std=0),
-        n_syll=NumericAttribute(value=4, operator=Operator.EQUAL, std=0),
+        age_of_aquisition=NumericAttribute(value=3, operator=Operator.GREATER),
+        n_phon=NumericAttribute(value=9, operator=Operator.LOWER),
+        n_syll=NumericAttribute(value=4, operator=Operator.EQUAL),
     )
     words = query_words(df, word_params)
     return words

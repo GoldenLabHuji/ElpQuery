@@ -64,13 +64,11 @@ def compare_values(row_value: float | None, word_param: NumericAttribute) -> boo
         return True
     match word_param.operator:
         case Operator.GREATER:
-            return float(row_value) > (word_param.value - word_param.std)
+            return float(row_value) > (word_param.value)
         case Operator.LOWER:
-            return float(row_value) < (word_param.value + word_param.std)
+            return float(row_value) < (word_param.value)
         case Operator.EQUAL:
-            return (word_param.value + word_param.std) > float(row_value) and float(
-                row_value
-            ) > (word_param.value - word_param.std)
+            return (word_param.value) == float(row_value)
         case _:
             raise ValueError("Invalid operator")
 

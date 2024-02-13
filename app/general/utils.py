@@ -1,13 +1,14 @@
 """
 Module to define the utility functions
 """
+
 import pandas as pd
 from app.models.word import Word
 from app.models.attribute import NumericAttribute
 from app.models.operator import Operator
 
 
-def query_words(df: pd.DataFrame, word_params: Word, limit: int = None) -> list:
+def query_words(df: pd.DataFrame, word_params: Word) -> list:
     """
     Function to query the words from the database
 
@@ -17,8 +18,6 @@ def query_words(df: pd.DataFrame, word_params: Word, limit: int = None) -> list:
         the dataframe to query from
     word_params : Word
         the word parameters to query with
-    limit : int, optional
-        the maximum number of words to return, by default None
 
     Returns
     -------
@@ -27,10 +26,7 @@ def query_words(df: pd.DataFrame, word_params: Word, limit: int = None) -> list:
     """
 
     words = []
-    counter = 0
     for _, row in df.iterrows():
-        if limit is not None and counter >= limit:
-            break
 
         row_dict = row.to_dict()
         age = word_params.age_of_aquisition
@@ -43,7 +39,6 @@ def query_words(df: pd.DataFrame, word_params: Word, limit: int = None) -> list:
 
         if is_age and is_n_phon and is_n_syll:
             words.append(row_dict)
-            counter += 1
 
     return words
 

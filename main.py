@@ -4,23 +4,21 @@ This is the main file of the project.
 
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
-from app.models.word import NumericWord, StringWord
+from app.models.word import Word
 from app.general.utils import upload_data, query_numeric_words, query_string_words
 
 app = FastAPI(default_response_class=ORJSONResponse)
 
 
-@app.post("/")
-def root(numeric_params: NumericWord = None, string_params: StringWord = None):
+@app.post("/{words_limit}")
+def root(word_params: Word, words_limit: int):
     """
     This is the root function of the project.
 
     Parameters
     ----------
-    numeric_params : NumericWord
-        A Word object containing the numeric parameters of the query
-    string_params : StringWord
-        A Word object containing the string parameters of the query
+    word_params : NumericWord
+        A Word object containing the parameters of the query
 
     Returns
     -------
@@ -28,8 +26,11 @@ def root(numeric_params: NumericWord = None, string_params: StringWord = None):
         A list of the query words
     """
     df = upload_data("Items.csv")
-    if numeric_params is not None:
-        words = query_numeric_words(df, numeric_params)
-    elif string_params is not None:
-        words = query_string_words(df, string_params)
+    if any([word_params.age_of_aquisition, word_params.n_phon, word_params.n_syll]):
+        words = query_numeric_words(df, word_params)
+    elif any([word_params.start_with, word_params.sound_like]):
+        words = query_string_words(df, word_params, words_limit)
+    else:
+        words = []
+
     return words

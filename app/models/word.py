@@ -7,9 +7,9 @@ from pydantic import BaseModel
 from app.models.attribute import NumericAttribute, StringAttribute
 
 
-class Word(BaseModel):
+class NumericWord(BaseModel):
     """
-    This is the word model
+    This is the word numeric model
 
     Attributes:
     -----------
@@ -19,14 +19,24 @@ class Word(BaseModel):
          The number of phonemes in the main pronunciation
     n_syll: int
         The number of syllables in the main pronunciation
+    """
+
+    age_of_aquisition: Optional[NumericAttribute] = None
+    n_phon: Optional[NumericAttribute] = None
+    n_syll: Optional[NumericAttribute] = None
+
+
+class StringWord(BaseModel):
+    """
+    This is the word string model
+
+    Attributes:
+    -----------
     start_with: str
         For query of words whos start with a specific string
     sound_like: str
         For query of words that sound like a specific string
     """
 
-    age_of_aquisition: Optional[NumericAttribute] = None
-    n_phon: Optional[NumericAttribute] = None
-    n_syll: Optional[NumericAttribute] = None
     start_with: Optional[StringAttribute] = None
     sound_like: Optional[StringAttribute] = None

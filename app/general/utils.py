@@ -8,7 +8,7 @@ from app.models.attribute import NumericAttribute
 from app.models.operator import Operator
 
 
-def query_words(df: pd.DataFrame, word_params: Word) -> list:
+def query_numeric_words(df: pd.DataFrame, word_params: Word) -> list:
     """
     Function to query the words from the database
 
@@ -33,9 +33,9 @@ def query_words(df: pd.DataFrame, word_params: Word) -> list:
         n_phon = word_params.n_phon
         n_syll = word_params.n_syll
 
-        is_age = age is None or compare_values(row_dict["Age_Of_Acquisition"], age)
-        is_n_phon = n_phon is None or compare_values(row_dict["NPhon"], n_phon)
-        is_n_syll = n_syll is None or compare_values(row_dict["NSyll"], n_syll)
+        is_age = age is None or compare_numeric_values(row_dict["Age_Of_Acquisition"], age)
+        is_n_phon = n_phon is None or compare_numeric_values(row_dict["NPhon"], n_phon)
+        is_n_syll = n_syll is None or compare_numeric_values(row_dict["NSyll"], n_syll)
 
         if is_age and is_n_phon and is_n_syll:
             words.append(row_dict)
@@ -43,7 +43,7 @@ def query_words(df: pd.DataFrame, word_params: Word) -> list:
     return words
 
 
-def compare_values(row_value: float | None, word_param: NumericAttribute) -> bool:
+def compare_numeric_values(row_value: float | None, word_param: NumericAttribute) -> bool:
     """
     Function to compare row value with Word
     parameter value using specified operator

@@ -10,8 +10,8 @@ from app.general.utils import upload_data, query_words
 app = FastAPI(default_response_class=ORJSONResponse)
 
 
-@app.post("/")
-def root(word_params: Word):
+@app.post("/{words_limit}")
+def root(word_params: Word, words_limit: int):
     """
     This is the root function of the project.
 
@@ -19,6 +19,8 @@ def root(word_params: Word):
     ----------
     word : Word
         A Word object containing the parameters of the query
+    words_limit : int
+        The number of words to be returned
 
     Returns
     -------
@@ -26,5 +28,5 @@ def root(word_params: Word):
         A list of the query words
     """
     df = upload_data("Items.csv")
-    words = query_words(df, word_params)
+    words = query_words(df, word_params, words_limit)
     return words

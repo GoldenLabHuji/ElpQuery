@@ -44,7 +44,7 @@ def query_numeric_words(
         row_dict = row.to_dict()
 
         is_age = age is None or compare_numeric_values(
-            row_dict["Age_Of_Acquisition"], age
+            row_dict["Age_Of_Acquisition"], age, is_equal_valid=False
         )
         is_n_phon = n_phon is None or compare_numeric_values(row_dict["NPhon"], n_phon)
         is_n_syll = n_syll is None or compare_numeric_values(row_dict["NSyll"], n_syll)
@@ -108,7 +108,7 @@ def query_string_words(df: pd.DataFrame, word_params: Word, words_limit: int) ->
 
 
 def compare_numeric_values(
-    row_value: float | None, word_param: NumericAttribute
+    row_value: float | None, word_param: NumericAttribute, is_equal_valid: bool = True
 ) -> bool:
     """
     Function to compare row value with Word
@@ -134,6 +134,8 @@ def compare_numeric_values(
         case Operator.LOWER:
             return float(row_value) < (word_param.value)
         case Operator.EQUAL:
+            if not is_equal_valid:
+                raise ValueError("This attribute is not valid for this operator")
             return (word_param.value) == float(row_value)
         case _:
             raise ValueError("Invalid operator")

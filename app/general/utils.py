@@ -33,7 +33,9 @@ def query_words(df: pd.DataFrame, word_params: Word) -> list:
         n_phon = word_params.n_phon
         n_syll = word_params.n_syll
 
-        is_age = age is None or compare_values(row_dict["Age_Of_Acquisition"], age)
+        is_age = age is None or compare_values(
+            row_dict["Age_Of_Acquisition"], age, is_equal_valid=False
+        )
         is_n_phon = n_phon is None or compare_values(row_dict["NPhon"], n_phon)
         is_n_syll = n_syll is None or compare_values(row_dict["NSyll"], n_syll)
 
@@ -43,7 +45,9 @@ def query_words(df: pd.DataFrame, word_params: Word) -> list:
     return words
 
 
-def compare_values(row_value: float | None, word_param: NumericAttribute) -> bool:
+def compare_values(
+    row_value: float | None, word_param: NumericAttribute, is_equal_valid: bool = True
+) -> bool:
     """
     Function to compare row value with Word
     parameter value using specified operator
@@ -68,6 +72,8 @@ def compare_values(row_value: float | None, word_param: NumericAttribute) -> boo
         case Operator.LOWER:
             return float(row_value) < (word_param.value)
         case Operator.EQUAL:
+            if not is_equal_valid:
+                raise ValueError("This attribute is not valid for this operator")
             return (word_param.value) == float(row_value)
         case _:
             raise ValueError("Invalid operator")

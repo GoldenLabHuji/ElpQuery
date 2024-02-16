@@ -19,6 +19,8 @@ def root(word_params: Word, words_limit: int):
     ----------
     word_params : NumericWord
         A Word object containing the parameters of the query
+    words_limit : int
+        The number of words to be returned
 
     Returns
     -------
@@ -27,7 +29,7 @@ def root(word_params: Word, words_limit: int):
     """
     df = upload_data("Items.csv")
     if any([word_params.age_of_aquisition, word_params.n_phon, word_params.n_syll]):
-        words = query_numeric_words(df, word_params)
+        words = query_numeric_words(df, word_params, words_limit)
     elif any([word_params.start_with, word_params.sound_like]):
         words = query_string_words(df, word_params, words_limit)
     else:

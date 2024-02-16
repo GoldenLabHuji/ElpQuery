@@ -10,7 +10,9 @@ from app.models.attribute import NumericAttribute, StringAttribute
 from app.models.operator import Operator
 
 
-def query_numeric_words(df: pd.DataFrame, word_params: Word) -> list:
+def query_numeric_words(
+    df: pd.DataFrame, word_params: Word, words_limit: int | None = None
+) -> list:
     """
     Function to query the words from the database with numeric parameters
 
@@ -20,6 +22,8 @@ def query_numeric_words(df: pd.DataFrame, word_params: Word) -> list:
         the dataframe to query from
     word_params : NumericWord
         the word parameters to query with
+    words_limit : int, optional
+        the maximum number of words to return
 
     Returns
     -------
@@ -27,13 +31,17 @@ def query_numeric_words(df: pd.DataFrame, word_params: Word) -> list:
         the list of words that match the query
     """
 
+    age = word_params.age_of_aquisition
+    n_phon = word_params.n_phon
+    n_syll = word_params.n_syll
+
+    if age is not None:
+        df = df.dropna(subset=["Age_Of_Acquisition"])
+
     words = []
     for _, row in df.iterrows():
 
         row_dict = row.to_dict()
-        age = word_params.age_of_aquisition
-        n_phon = word_params.n_phon
-        n_syll = word_params.n_syll
 
         is_age = age is None or compare_numeric_values(
             row_dict["Age_Of_Acquisition"], age
@@ -43,6 +51,15 @@ def query_numeric_words(df: pd.DataFrame, word_params: Word) -> list:
 
         if is_age and is_n_phon and is_n_syll:
             words.append(row_dict)
+
+    if words_limit is not None:
+        while words_limit > 0:
+            try:
+                random_words = random.sample(words, words_limit)
+            except ValueError:
+                words_limit -= 1
+            else:
+                return random_words
 
     return words
 

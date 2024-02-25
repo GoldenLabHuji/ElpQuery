@@ -84,27 +84,21 @@ def query_string_words(df: pd.DataFrame, word_params: Word, words_limit: int) ->
     start_with = word_params.start_with
     sound_like = word_params.sound_like
 
-    words = []
-    for _, row in df.iterrows():
+    if start_with is not None:
+        mask = df["Word"].str.startswith(start_with.value, na=False)
+    elif sound_like is not None:
+        mask = (
+            df["Word"].fillna("").apply(lambda x: is_sound_like(x, sound_like.value, 2))
+        )
+    else:
+        return []
 
-        row_dict = row.to_dict()
-        word = str(row_dict["Word"])
+    filtered_df = df[mask]
 
-        if start_with is not None:
-            if compare_string_values(word, start_with, "StartWith"):
-                words.append(row_dict)
-        elif sound_like is not None:
-            if compare_string_values(word, sound_like, "SoundLike"):
-                words.append(row_dict)
-    while words_limit > 0:
-        try:
-            random_words = random.sample(words, words_limit)
-        except ValueError:
-            words_limit -= 1
-        else:
-            return random_words
+    if len(filtered_df) > words_limit:
+        filtered_df = filtered_df.sample(words_limit)
 
-    return words
+    return filtered_df.to_dict("records")
 
 
 def compare_numeric_values(

@@ -38,28 +38,31 @@ def query_numeric_words(
     if age is not None:
         df = df.dropna(subset=["Age_Of_Acquisition"])
 
-    words = []
-    for _, row in df.iterrows():
-
-        row_dict = row.to_dict()
-
-        is_age = age is None or compare_numeric_values(
-            row_dict["Age_Of_Acquisition"], age, is_equal_valid=False
+    mask = (
+        (
+            df["Age_Of_Acquisition"].apply(
+                lambda x: compare_numeric_values(x, age, is_equal_valid=False)
+            )
+            if age is not None
+            else True
         )
-        is_n_phon = n_phon is None or compare_numeric_values(row_dict["NPhon"], n_phon)
-        is_n_syll = n_syll is None or compare_numeric_values(row_dict["NSyll"], n_syll)
+        & (
+            df["NPhon"].apply(lambda x: compare_numeric_values(x, n_phon))
+            if n_phon is not None
+            else True
+        )
+        & (
+            df["NSyll"].apply(lambda x: compare_numeric_values(x, n_syll))
+            if n_syll is not None
+            else True
+        )
+    )
+    filtered_df = df[mask]
 
-        if is_age and is_n_phon and is_n_syll:
-            words.append(row_dict)
+    words = filtered_df.to_dict("records")
 
-    if words_limit is not None:
-        while words_limit > 0:
-            try:
-                random_words = random.sample(words, words_limit)
-            except ValueError:
-                words_limit -= 1
-            else:
-                return random_words
+    if words_limit is not None and len(words) > words_limit:
+        words = random.sample(words, words_limit)
 
     return words
 
@@ -122,17 +125,20 @@ def compare_numeric_values(
     """
     if row_value is None:
         return True
-    match word_param.operator:
-        case Operator.GREATER:
-            return float(row_value) > (word_param.value)
-        case Operator.LOWER:
-            return float(row_value) < (word_param.value)
-        case Operator.EQUAL:
-            if not is_equal_valid:
-                raise ValueError("This attribute is not valid for this operator")
-            return (word_param.value) == float(row_value)
-        case _:
-            raise ValueError("Invalid operator")
+
+    operator = word_param.operator
+    value = word_param.value
+
+    if operator == Operator.GREATER:
+        return float(row_value) > value
+    elif operator == Operator.LOWER:
+        return float(row_value) < value
+    elif operator == Operator.EQUAL:
+        if not is_equal_valid:
+            raise ValueError("This attribute is not valid for this operator")
+        return float(row_value) == value
+    else:
+        raise ValueError("Invalid operator")
 
 
 def compare_string_values(

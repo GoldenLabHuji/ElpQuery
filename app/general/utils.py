@@ -131,14 +131,16 @@ def compare_numeric_values(
 
     if operator == Operator.GREATER:
         return float(row_value) > value
-    elif operator == Operator.LOWER:
+    if operator == Operator.LOWER:
         return float(row_value) < value
-    elif operator == Operator.EQUAL:
+    if operator == Operator.EQUAL:
         if not is_equal_valid:
             raise ValueError("This attribute is not valid for this operator")
         return float(row_value) == value
-    else:
-        raise ValueError("Invalid operator")
+    if operator == Operator.RANGE:
+        return value[0] <= float(row_value) <= value[1]
+
+    raise ValueError("Invalid operator")
 
 
 def compare_string_values(

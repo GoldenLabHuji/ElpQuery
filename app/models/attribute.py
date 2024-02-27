@@ -12,14 +12,14 @@ class NumericAttribute(BaseModel):
 
     Attributes
     ----------
-    value : float
+    value : float | list[float]
         the value of the attribute
     operator : Operator
         the operator to be used for the comparison
 
     """
 
-    value: float
+    value: float | list[float]
     operator: Operator
 
 

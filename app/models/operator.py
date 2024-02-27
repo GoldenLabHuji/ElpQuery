@@ -13,3 +13,4 @@ class Operator(Enum):
     GREATER = "Greater"
     LOWER = "Lower"
     EQUAL = "Equal"
+    RANGE = "Range"
